@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-import sqlite3
 
 app = FastAPI()
 
@@ -7,22 +6,23 @@ app = FastAPI()
 def home():
     return {"message": "AI Exam Coach Running 🚀"}
 
-@app.get("/questions")
-def get_questions():
-    conn = sqlite3.connect("database/questions.db")
-    cursor = conn.cursor()
+@app.get("/ask")
+def ask(question: str):
+    
+    # Simple AI logic (rule-based)
+    if "ai" in question.lower():
+        answer = "AI (Artificial Intelligence) is the simulation of human intelligence in machines."
+    
+    elif "python" in question.lower():
+        answer = "Python is a popular programming language used in AI, web development, and automation."
+    
+    elif "network" in question.lower():
+        answer = "A network connects multiple devices to share data and resources."
+    
+    else:
+        answer = "Good question! I will answer this properly when we connect real AI."
 
-    cursor.execute("SELECT question, option1, option2, option3, option4, answer FROM questions LIMIT 10")
-    rows = cursor.fetchall()
-
-    conn.close()
-
-    result = []
-    for row in rows:
-        result.append({
-            "question": row[0],
-            "options": [row[1], row[2], row[3], row[4]],
-            "answer": row[5]
-        })
-
-    return result
+    return {
+        "question": question,
+        "answer": answer
+    }
