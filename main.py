@@ -1,9 +1,15 @@
 from fastapi import FastAPI
 import google.generativeai as genai
+import os
+from dotenv import load_dotenv
+
+# Load .env
+load_dotenv()
 
 app = FastAPI()
 
-genai.configure(api_key="AIzaSyC2-CArnZdUhmgVMRJjsGH167ywSBhFyxE")
+# Secure API key
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 model = genai.GenerativeModel("gemini-pro")
 
@@ -13,9 +19,18 @@ def home():
 
 @app.get("/ask")
 def ask(question: str):
-    response = model.generate_content(question)
-    
+    try:
+        response = model.generate_content(
+            question,
+            generation_config={"max_output_tokens": 150}
+        )
+
+        answer = response.text if response.text else "No response"
+
+    except Exception as e:
+        answer = f"Error: {str(e)}"
+
     return {
         "question": question,
-        "answer": response.text
+        "answer": answer
     }
