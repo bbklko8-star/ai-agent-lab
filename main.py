@@ -9,9 +9,9 @@ load_dotenv()
 app = FastAPI()
 
 # Secure API key
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+genai.configure(api_key=os.getenv("AIzaSyC2-CArnZdUhmgVMRJjsGH167ywSBhFyxE"))
+model = genai.GenerativeModel("gemini-1.5-flash")
 
-model = genai.GenerativeModel("gemini-pro")
 
 @app.get("/")
 def home():
