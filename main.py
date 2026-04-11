@@ -12,7 +12,8 @@ app = FastAPI()
 genai.configure(api_key=os.getenv("AIzaSyC2-CArnZdUhmgVMRJjsGH167ywSBhFyxE"))
 
 # Use latest working model
-model = genai.GenerativeModel("gemini-1.5-flash-latest")
+
+model = genai.GenerativeModel("models/gemini-1.5-flash")
 
 # Home route
 @app.get("/")
